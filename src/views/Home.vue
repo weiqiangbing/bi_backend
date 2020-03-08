@@ -2,6 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/images/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="wl" style="height:40px;border:1px solid #000"></div>
   </div>
 </template>
 
@@ -18,8 +19,8 @@ export default {
 </script>
 <style lang="less" scoped>
   .home{
-    width: 300px;
+    width: 750px; 
     height: 200px;
-    background-color: @primaryColor;
+    background-color: @warningColor; 
   }
 </style>
