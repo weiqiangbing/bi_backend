@@ -10,7 +10,6 @@ export default {
   components:{Button},
   data(){
     return{
-
     }
   },
 
