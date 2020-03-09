@@ -21,22 +21,22 @@ const routes = [
       title: '其他活动',
     },
   },
-  // {
-  //   path: '/errPage',
-  //   name: 'errPage',
-  //   component: () => import('../components/errPage.vue'),
-  //   meta: {
-  //     title: '路径错误',
-  //   },
-  // },
-  // {
-  //   redirect: '/errPage',
-  //   path: '*',
-  // },
+  {
+    path: '/errPage',
+    name: 'errPage',
+    component: () => import('../components/errPage.vue'),
+    meta: {
+      title: '路径错误',
+    },
+  },
+  {
+    redirect: '/errPage',
+    path: '*',
+  },
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })
