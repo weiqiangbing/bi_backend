@@ -2,6 +2,7 @@ html,body {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	height: 100%;
 	// font-size: 20px;
 }
 body {
@@ -10,6 +11,8 @@ body {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	/*用户横竖屏切换的时候，禁止字体缩放*/
+	-webkit-text-size-adjust: 100%;
  /* Safari */
 }
 body * {
@@ -17,10 +20,6 @@ body * {
 	-webkit-user-select: none;
   /*默认字体*/
 	font-family: helvetica;
-}
-body {
-  /*用户横竖屏切换的时候，禁止字体缩放*/
-	-webkit-text-size-adjust: 100%;
 }
 img {
 	vertical-align: top;

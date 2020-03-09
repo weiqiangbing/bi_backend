@@ -20,8 +20,8 @@ export default {
 </script>
 <style lang="less" scoped>
   .home{
-    width: 750px; 
-    height: 200px;
+    width: 100%;
+    height: 100%;
     background-color: @warningColor; 
   }
 </style>
