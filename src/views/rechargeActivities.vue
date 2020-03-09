@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="rechargeActivities">
     <img alt="Vue logo" src="../assets/images/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <div style="color:red">123</div>
@@ -12,7 +12,7 @@
 import HelloWorld from '@/components/HelloWorld.vue'
 
 export default {
-  name: 'Home',
+  name: 'rechargeActivities',
   components: { 
     HelloWorld
   }
