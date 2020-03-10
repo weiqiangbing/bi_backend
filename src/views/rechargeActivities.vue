@@ -3,7 +3,8 @@
     <img alt="Vue logo" src="../assets/images/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/>
     <div style="color:red">123</div>
-    <div style="color:red">123</div>
+    <div style="color:red">456</div>
+    <div style="color:red">789</div>
   </div>
 </template>
 
