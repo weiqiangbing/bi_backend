@@ -5,6 +5,7 @@
     <div style="color:red">123</div>
     <div style="color:red">456</div>
     <div style="color:red">789</div>
+    <div style="color:red">abc</div>
   </div>
 </template>
 
