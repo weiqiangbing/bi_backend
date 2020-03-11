@@ -8,9 +8,10 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="less">
   #app{
     height: 100%;
+    background-color: @warningColor;
   }
 </style>
 

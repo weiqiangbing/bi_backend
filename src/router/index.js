@@ -21,18 +21,18 @@ const routes = [
       title: '其他活动',
     },
   },
-  {
-    path: '/errPage',
-    name: 'errPage',
-    component: () => import('../components/errPage.vue'),
-    meta: {
-      title: '路径错误',
-    },
-  },
-  {
-    redirect: '/errPage',
-    path: '*',
-  },
+  // {
+  //   path: '/errPage',
+  //   name: 'errPage',
+  //   component: () => import('../components/errPage.vue'),
+  //   meta: {
+  //     title: '路径错误',
+  //   },
+  // },
+  // {
+  //   redirect: '/errPage',
+  //   path: '*',
+  // },
 ]
 
 const router = new VueRouter({
