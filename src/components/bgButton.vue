@@ -11,7 +11,7 @@
 <script>
 export default {
   props:['btnBgUrl', 'btnWord'],
-  name: 'button',
+  name: 'buttons',
   mounted(){
     
   },

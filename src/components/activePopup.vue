@@ -1,20 +1,21 @@
 <template>
   <div class="active_popup">
-    <Popup v-model="popupShow" @close="onClose" @before-enter="onClose">
-      <div class="pop_box">
-        <img class="pop_header" :src="headerUrl" alt="pop弹框图片">
-        <div class="pop_content">
-          <div class="pop_tip">温馨提示</div>
-          <div class="pop_list">
-            非常抱歉<br>活动结束了～
-          </div>
-          <div class="pop_btn" @click="onClose">
-            <bgButton :btnBgUrl="btnBgUrl" btnWord="我知道了"></bgButton>
+    <!-- <transition name="bounce"> -->
+      <Popup v-model="popupShow" @close="onClose" @before-enter="onClose">
+        <div class="pop_box">
+          <img class="pop_header" :src="headerUrl" alt="pop弹框图片">
+          <div class="pop_content">
+            <div class="pop_tip">温馨提示</div>
+            <div class="pop_list">
+              非常抱歉<br>活动结束了～
+            </div>
+            <div class="pop_btn" @click="onClose">
+              <bgButton :btnBgUrl="btnBgUrl" btnWord="我知道了"></bgButton>
+            </div>
           </div>
         </div>
-      </div>
-    </Popup>
-  
+      </Popup>
+    <!-- </transition> -->
   </div>
 </template>
 
@@ -22,7 +23,7 @@
 import {Popup} from 'vant'
 import bgButton from './bgButton'
 export default {
-  props:['headerUrl', 'popupShow'],
+  props:['headerUrl'],
   name: 'activePopup',
   components:{Popup, bgButton},
   mounted(){
@@ -30,6 +31,7 @@ export default {
   },
   data(){
     return {
+      popupShow: false,
       btnBgUrl: require('../assets/images/btnbg.png'),
     }
   },
@@ -40,6 +42,7 @@ export default {
     onClose(){
       // console.log(this.popupShow);
       this.$emit('closePopup')
+      
     },
   }
 
@@ -82,5 +85,10 @@ export default {
         padding-bottom: 10px;
       }
     }
+    
   }
+  // .active_popup /deep/.van-overlay{
+  //   opacity: 0.2905;
+  // }
+
 </style>

@@ -18,8 +18,6 @@ import './lib/jsbridge'
 // import config from './lib/config'
 // config.themPathName = themWord
 
-
-
 Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios

@@ -24,45 +24,18 @@
       </div>
       <!-- <button @click="getInitData">获取token</button>
       <button @click="getData">请求数据</button> -->
-      <div class="rechar_item">
+      <div class="rechar_item" v-for="(item, index) in activeData" :key="index">
         <div class="rechar_title">
           <div class="title_word">
-            <div class="main_title">4200魔币+600魔豆</div>
-            <div class="second_title">原价：us19.99=8400书币+1200书券</div>
+            <div class="main_title">{{item.mainTitle}}</div>
+            <div class="second_title">{{item.secondTitle}}</div>
           </div>
           
         </div>
-        <div class="rechar_money">US$19.99</div>
+        <div class="rechar_money">{{item.recharMoney}}</div>
         <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购" @btnClick="btnClick"></bgButton>
       </div>
 
-      <div class="rechar_item">
-        <div class="rechar_title">
-          <div class="title_word">
-            <div class="main_title">4200魔币+600魔豆</div>
-            <div class="second_title">原价：us19.99=8400书币+1200书券</div>
-          </div>
-          
-        </div>
-        <div class="rechar_money">US$19.99</div>
-        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购"></bgButton>
-      </div>
-      <div class="rechar_item">
-        <div class="rechar_title">
-          <div class="title_word">
-            <div class="main_title">4200魔币+600魔豆</div>
-            <div class="second_title">原价：us19.99=8400书币+1200书券</div>
-          </div>
-          
-        </div>
-        <div class="rechar_money">US$19.99</div>
-        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购"></bgButton>
-      </div>
-      <!-- <row>
-        <Col span="8">span: 8</Col>
-        <Col span="8">span: 8</Col>
-        <Col span="8">span: 8</Col>
-      </Row> -->
       <div class="rechar_footer">
         <div class="footer_title">
           <img src="../assets/images/yinhao1.png" alt="活动规则图片">
@@ -76,7 +49,7 @@
         </div>
       </div>
     </div>
-    <activePopup :headerUrl="headerUrl" @closePopup="closePopup" :popupShow="popupShow"></activePopup>
+    <activePopup ref="popup" :headerUrl="headerUrl" @closePopup="closePopup"></activePopup>
   </div>
 </template>
 
@@ -95,36 +68,38 @@ export default {
   data(){
     return {
       popupShow: false,
-      popupShow: false,
       btnBgUrl: require('../assets/images/btnbg.png'),
-      headerUrl: require('../assets/images/popbg.png')
+      headerUrl: require('../assets/images/popbg.png'),
+      activeData:[
+        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'},
+        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'},
+        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'}
+      ]
     }
   },
   created(){
     // console.log('InteractorProxy',InteractorProxy.login);
       // console.log('4444','./src/assets/css/thems/'+config.themPathName+'.less');
-    
+    this.getInitData()
   },
   methods:{
     getInitData(){
       tokenCheck().then((data)=>{
-        console.log('data', data);
-        
-
-      })
-    },
-    getData(){
-      this.$axios.get('/user.info').then((res)=>{
-        console.log('111111',res);
-        
+        // this.$axios.get('/recharge.rechargeEvent?event_id=141&user_id=72&platform=3000').then((res)=>{
+        //   console.log('111111',res);
+        // })
       })
     },
     
     btnClick(){
-      this.popupShow = true
+      this.$refs.popup.popupShow = true
     },
     closePopup(){
-      this.popupShow = false
+      this.$refs.popup.popupShow = false
+    },
+    btnClick1(){
+      InteractorProxy.login()
+      
     }
 
   }

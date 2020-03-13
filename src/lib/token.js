@@ -4,7 +4,7 @@ import axios from './axios'
 export function tokenCheck (){
     return new Promise((resolve, reject)=>{
         let token = storage.get('tokenid')
-        console.log(token);
+        // console.log(token);
         if(token){
             resolve('没有请求获取token')
         }else{
