@@ -7,13 +7,20 @@ import axios from './lib/axios'
 import './assets/css/main.less'
 import 'lib-flexible/flexible'
 
-// import them from './lib/them
-// them.changeThem('blank')
-
 import './lib/jsbridge'
 
-Vue.config.productionTip = false
+// console.log(InteractorProxy.registerHandler());
+// document.addEventListener('click', function(dd){
+//   console.log(dd);
+// })
+// import them from './lib/them'
+// let themWord = them.changeThem('blank')
+// import config from './lib/config'
+// config.themPathName = themWord
 
+
+
+Vue.config.productionTip = false
 
 Vue.prototype.$axios = axios
 

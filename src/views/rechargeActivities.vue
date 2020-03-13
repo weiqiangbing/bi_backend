@@ -33,10 +33,7 @@
           
         </div>
         <div class="rechar_money">US$19.99</div>
-        <div class="rechar_btn">
-          <div class="btn_word">立即抢购</div>
-          <img class="btn_bg" src="../assets/images/btnbg.png" alt="按钮图片">
-        </div>
+        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购" @btnClick="btnClick"></bgButton>
       </div>
 
       <div class="rechar_item">
@@ -48,10 +45,7 @@
           
         </div>
         <div class="rechar_money">US$19.99</div>
-        <div class="rechar_btn">
-          <div class="btn_word">立即抢购</div>
-          <img class="btn_bg" src="../assets/images/btnbg.png" alt="按钮图片">
-        </div>
+        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购"></bgButton>
       </div>
       <div class="rechar_item">
         <div class="rechar_title">
@@ -62,17 +56,13 @@
           
         </div>
         <div class="rechar_money">US$19.99</div>
-        <div class="rechar_btn">
-          <div class="btn_word">立即抢购</div>
-          <img class="btn_bg" src="../assets/images/btnbg.png" alt="按钮图片">
-        </div>
+        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购"></bgButton>
       </div>
       <!-- <row>
         <Col span="8">span: 8</Col>
         <Col span="8">span: 8</Col>
         <Col span="8">span: 8</Col>
       </Row> -->
-
       <div class="rechar_footer">
         <div class="footer_title">
           <img src="../assets/images/yinhao1.png" alt="活动规则图片">
@@ -86,29 +76,34 @@
         </div>
       </div>
     </div>
-    <Popup v-model="popupShow" @close="onClose">内容</Popup>
-
+    <activePopup :headerUrl="headerUrl" @closePopup="closePopup" :popupShow="popupShow"></activePopup>
   </div>
 </template>
 
 <script>
 // import Vue from 'vue'
 import {tokenCheck} from '../lib/token'
-import {Col, Row, Popup} from 'vant'
-// Vue.use(Row)
-// Vue.use(Col)
+// import {Col, Row, Popup} from 'vant'
+import bgButton from '../components/bgButton'
+import activePopup from '../components/activePopup'
+// import config from '../lib/config'
 export default {
   name: 'rechargeActivities',
   components: { 
-    Col,Row,Popup
+    activePopup,bgButton
   },
   data(){
     return {
-      popupShow: false
+      popupShow: false,
+      popupShow: false,
+      btnBgUrl: require('../assets/images/btnbg.png'),
+      headerUrl: require('../assets/images/popbg.png')
     }
   },
   created(){
     // console.log('InteractorProxy',InteractorProxy.login);
+      // console.log('4444','./src/assets/css/thems/'+config.themPathName+'.less');
+    
   },
   methods:{
     getInitData(){
@@ -124,12 +119,11 @@ export default {
         
       })
     },
-    showPop(){
-      console.log(Popup);
-      // this.setData({ popupShow: true });
+    
+    btnClick(){
       this.popupShow = true
     },
-    onClose(){
+    closePopup(){
       this.popupShow = false
     }
 
@@ -152,9 +146,9 @@ export default {
     .rechar_money{
       font-size:18px;
       font-weight:400;
-      color:rgba(240,83,83,1);
+      color: @expendMoneyColor;
       line-height:25px;
-      margin-top: 7px;
+      margin-top: 8px;
     }
     .rechar_box{
       width: 100%;
@@ -178,6 +172,7 @@ export default {
           position: relative;
           top: 6px;
           padding-top: 12px;
+          box-sizing: border-box;
           .time_num{
             line-height: 22px;
             p{
@@ -188,26 +183,26 @@ export default {
               font-size:12px;
               width:20px;
               height:18px;
-              background:rgba(244,72,72,1);
-              color: #fff;
+              background: @timeBgColor;
+              color: @whiteBgColor;
             }
             .tip{
               font-size:10px;
-              color: #F44848;
+              color: @timeBgColor;
             }
           }
           .time_to{
             font-size:12px;
             font-weight:400;
-            color:rgba(101,59,28,1);
-            line-height:17px;
+            color: @toTimeColor;
+            line-height: 20px;
           }
         }
         .time_silder{
           width:318px;
           height:14px;
-          background:rgba(255,140,135,1);
-          box-shadow:0px -1px 2px 0px rgba(205,72,72,1);
+          background: @timeSilderColor;
+          box-shadow: 0px -1px 2px 0px @timeSilderShadowColor;
           border-radius:7px;
         }
 
@@ -215,8 +210,8 @@ export default {
       .rechar_item{
         width: 329px;
         height: 140px;
-        background:rgba(255,253,243,1);
-        box-shadow:0px 5px 0px 0px rgba(255,134,107,1);
+        background: @whiteBgColor;
+        box-shadow:0px 5px 0px 0px @activeShasowColor;
         margin: 14px auto;
         border-radius: 4px;
         text-align: center;
@@ -231,43 +226,20 @@ export default {
             text-align: center;
             .main_title{
               font-size: 18px;
-              color: #AC0F0F;
+              color: @moBeanColor;
               line-height:22px;
             }
             .second_title{
               font-size:10px;
               font-weight:400;
-              color: #D9B3B3;
+              color: @originalPriceColor;
               font-size: 14px;
               text-decoration: line-through;
-              margin-top: 2px;
+              margin-top: 6px;
               line-height:20px;
             }
           }
         }
-        .rechar_btn{
-            font-size: 16px;
-            // margin-right: 9px;
-            margin-top: 9px;
-            position: relative;
-            text-align: center;
-            width: 120px;
-            margin-left: -70px;
-            left: 50%;
-            .btn_word{
-              position: absolute;
-              z-index: 9;
-              left: 0;
-              line-height: 34px;
-              margin-left: 44px;
-              color: #ffffff;
-            }
-            .btn_bg{
-              position: absolute;
-              left: 0;
-
-            }
-          }
         .rechar_content{
           display: flex;
           // width: 42px;
@@ -303,6 +275,7 @@ export default {
         }
       }
     }
+    
   }
   
 </style>

@@ -8,6 +8,6 @@ module.exports = {
     /*静态资源文件 */
     buildStaticName: 'assets',
     /*主题less文件 */
-    themPath: './src/assets/css/thems/blank.less',
+    themPathName: 'blank',
     
 };
