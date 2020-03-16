@@ -7,7 +7,7 @@ module.exports = {
     buildPageName: 'activity',
     /*静态资源文件 */
     buildStaticName: 'assets',
-    /*主题less文件 */
-    themPathName: 'blank',
+    /*主题默认文件 */
+    defaultThem: 'fiery',
     
 };

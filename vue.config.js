@@ -39,7 +39,7 @@ module.exports = {
         'style-resources-loader': {
             preProcessor: 'less',
             patterns: [
-                `./src/assets/css/thems/${config.themPathName}.less`,
+                './src/assets/css/global.less',
                 // './src/assets/css/thems/light.less'
             ],
         },

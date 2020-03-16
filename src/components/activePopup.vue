@@ -1,9 +1,9 @@
 <template>
-  <div class="active_popup">
+  <div class="active_popup" v-show="popupAll">
     <!-- <transition name="bounce"> -->
-      <Popup v-model="popupShow" @close="onClose" @before-enter="onClose">
+      <Popup v-model="popupShow" @close="onClose" :overlay-style="{backgroundColor:'rgba(0, 0, 0, 0.29)'}">
         <div class="pop_box">
-          <img class="pop_header" :src="headerUrl" alt="pop弹框图片">
+          <img id="imgId" class="pop_header" :src="headerUrl" alt="pop弹框图片">
           <div class="pop_content">
             <div class="pop_tip">温馨提示</div>
             <div class="pop_list">
@@ -11,6 +11,9 @@
             </div>
             <div class="pop_btn" @click="onClose">
               <bgButton :btnBgUrl="btnBgUrl" btnWord="我知道了"></bgButton>
+            </div>
+            <div class="end_time">
+              活动截止时间：2020-02-02
             </div>
           </div>
         </div>
@@ -20,7 +23,7 @@
 </template>
 
 <script>
-import {Popup} from 'vant'
+import {Popup, Loading} from 'vant'
 import bgButton from './bgButton'
 export default {
   props:['headerUrl'],
@@ -31,6 +34,7 @@ export default {
   },
   data(){
     return {
+      popupAll: false,
       popupShow: false,
       btnBgUrl: require('../assets/images/btnbg.png'),
     }
@@ -40,10 +44,22 @@ export default {
     //   this.$emit('btnClick')
     // },
     onClose(){
-      // console.log(this.popupShow);
-      this.$emit('closePopup')
+      this.popupShow = false
       
     },
+    isShowPopup(isTrue){
+      if(isTrue){
+        this.popupShow = true
+        this.$nextTick(()=>{
+          let imgId = document.getElementById('imgId')
+          imgId.onload=(()=>{
+            this.popupAll = true
+          })
+        })
+      }else{
+        this.popupShow = false
+      }
+    }
   }
 
 }
@@ -62,27 +78,27 @@ export default {
     .pop_content{
       text-align: center;
       width:260px;
-      background: @whiteBgColor;
       border-radius:0px 0px 8px 8px;
       margin: 0 auto;
       margin-top: -1px;
       .pop_tip{
         font-size:18px;
-        color: @popupTitleColor;
         font-weight: bold;
         line-height: 25px;
         padding-top: 7px;
       }
       .pop_list{
         font-weight:500;
-        color: @popupContentColor;
         line-height:22px;
         font-size:16px;
         margin-top: 4px;
       }
       .pop_btn{
-        padding: 6px;
-        padding-bottom: 10px;
+        padding-top: 6px;
+        // padding-bottom: 10px;
+      }
+      .end_time{
+        padding: 7px;
       }
     }
     

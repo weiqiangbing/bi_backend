@@ -4,19 +4,18 @@ import router from './router'
 import store from './store'
 import axios from './lib/axios'
 
-import './assets/css/main.less'
-import 'lib-flexible/flexible'
+import './assets/js/flexible'
 
 import './lib/jsbridge'
 
-// console.log(InteractorProxy.registerHandler());
-// document.addEventListener('click', function(dd){
-//   console.log(dd);
-// })
-// import them from './lib/them'
-// let themWord = them.changeThem('blank')
-// import config from './lib/config'
-// config.themPathName = themWord
+InteractorProxy.registerHandler()
+console.log(InteractorProxy.app);
+
+import them from './lib/them'
+let themWord = them.changeThem(InteractorProxy.app.scheme)
+
+import './assets/css/main.less'
+import ('./assets/css/thems/'+themWord+'.less')
 
 Vue.config.productionTip = false
 

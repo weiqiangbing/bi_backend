@@ -1,13 +1,14 @@
+import { defaultThem } from '../lib/config'
 export default {
-    changeThem(them){        
+    changeThem(them){  
         switch (them){ 
-            case 'blank':
-                return 'blank'
+            case 'legendnovelapp':
+                return 'fiery'
             // break;
-
             case 'light':
-                return 'light'
-            // break;
+                return 'legend'
+            default:
+                return defaultThem
         }
 
     }
