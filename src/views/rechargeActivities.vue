@@ -1,31 +1,28 @@
 <template>
   <div class="rechargeActivities">
     <div class="rechar_banner">
-      <img src="../assets/images/banner.png" alt="" srcset="">
+      <img :src="mainData.event.position.top">
     </div>
-    <div class="rechar_box">
-      <activeDateBox></activeDateBox>
-      <!-- <button @click="getInitData">获取token</button>
-      <button @click="getData">请求数据</button> -->
-      <div class="rechar_item" v-for="(item, index) in activeData" :key="index">
+    <div class="rechar_box" style="bakground-color:'red'">
+      <activeDateBox :expiryTime="expiryTime"></activeDateBox>
+      <div class="rechar_item" v-for="(item, index) in mainData.product_list" :key="index">
         <div class="rechar_title">
           <div class="title_word">
-            <div class="main_title">{{item.mainTitle}}</div>
-            <div class="second_title">{{item.secondTitle}}</div>
+            <div class="main_title">{{item.coin+item.coin_name+'+'+item.premium+item.premium_name}}</div>
+            <div class="second_title">{{'原价'+item.currency+item.priceValue+'='+item.event_coin+item.coin_name}}</div>
           </div>
         </div>
-        <div class="rechar_money">{{item.recharMoney}}</div>
-        <bgButton :btnBgUrl="btnBgUrl" btnWord="立即抢购" @btnClick="btnClick"></bgButton>
+        <div class="rechar_money">{{item.mark+item.priceValue}}</div>
+        <bgButton :btnBgUrl="mainData.event.position.button" btnWord="立即抢购" @btnClick="btnClick(index)"></bgButton>
         <div class="corner_marker">
-          <img src="../assets/images/cornermarker.png" alt="角标">
-          <p>角标</p>
+          <p>标签标记</p>
         </div>
       </div>
 
       <div class="rechar_footer">
         <div class="footer_title">
           <!-- <img src="../assets/images/yinhao1.png" alt="活动规则图片"> -->
-          <b>活动规则</b>
+          <b @click="showLoad">活动规则</b>
           <!-- <img src="../assets/images/yinhao2.png" alt="活动规则图片"> -->
         </div>
         <div class="footer_content">
@@ -40,14 +37,18 @@
 </template>
 
 <script>
-import {tokenCheck} from '../lib/token'
+import {tokenCheck } from '../lib/token'
 import bgButton from '../components/bgButton'
 import activePopup from '../components/activePopup'
 import activeDateBox from '../components/activeDateBox'
+import { Toast } from 'vant';
+import axios from 'axios'
+// import '../assets/js/chinese'
 
 export default {
   name: 'rechargeActivities',
   components: { 
+    Toast,
     activePopup,
     bgButton,
     activeDateBox
@@ -55,37 +56,78 @@ export default {
   data(){
     return {
       popupShow: false,
+      mainData:{},
+      expiryTime:'',
       btnBgUrl: require('../assets/images/btnbg.png'),
-      headerUrl: require('../assets/images/popbg.png'),
-      activeData:[
-        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'},
-        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'},
-        {mainTitle: '4200魔币+600魔豆', secondTitle:'原价：us19.99=8400书币+1200书券', recharMoney:'US$19.99'}
-      ]
+      headerUrl: '',
+      
     }
   },
   created(){
+    this.getInitData()
     // console.log('InteractorProxy',InteractorProxy.login);
       // console.log('4444','./src/assets/css/thems/'+config.themPathName+'.less');
-    this.getInitData()
+    
   },
   methods:{
     getInitData(){
+      let _this = this
+      this.$loading.show()
       tokenCheck().then((data)=>{
-        // this.$axios.get('/recharge.rechargeEvent?event_id=141&user_id=72&platform=3000').then((res)=>{
-        //   console.log('111111',res);
-        // })
+        console.log(data);
+        this.$axios.get('/v1/event.recharge_activity?event_id=141&channel_code=apple&currency=USD').then((res)=>{
+          // console.log(res);
+          _this.mainData = res.data
+          _this.expiryTime = res.data.event.event_desc
+          _this.headerUrl = res.data.event.popup_top
+          _this.$loading.hide()
+        })
       })
     },
-    
-    btnClick(){
-      this.$refs.popup.isShowPopup(true)
+    getInitData2(){
+      // let _this = this
+      // // this.$loading.show()
+      //   this.$axios.get('http://localhost:3000/api/users/getCode').then((res)=>{
+      //     Toast('接口请求成功')
+      //     console.log(res);
+      //     Toast(JSON.stringify(res));
+      //     _this.$loading.hide()
+      //   })
+    },
+    // testChina(){
+    //   zh_tran('t')
+    // },
+    btnClick(index){
+      if(index==0){
+        // console.log(this.btnBgUrl);
+        
+        this.$refs.popup.isShowPopup(true)
+        console.log(window.InteractorProxy);
+        let info = window.InteractorProxy.getUserInfo()
+        Toast(JSON.stringify(info))
+      }else if(index==1){
+        // Toast('重新登陆2')
+        window.InteractorProxy.open("open.page.HOME")
+      }else if(index==2){
+        window.InteractorProxy.login()
+      }else if(index==3){
+        // window.InteractorProxy.startWechatPay("10", "3000", "20")
+        this.getInitData1()
+      }else if(index==4){
+        this.getInitData2()
+      }
     },
     // closePopup(){
     //   this.$refs.popup.isShowPopup(false)
     // },
     btnClick1(){
-      InteractorProxy.login()
+      window.InteractorProxy.login()
+      
+    },
+    showLoad(){
+      console.log('InteractorProxy',window.InteractorProxy);
+      console.log('window.InteractorProxy.app',window.InteractorProxy.app);
+      console.log('window.InteractorProxy.getUserInfo()',window.InteractorProxy.getUserInfo());
       
     }
 
@@ -122,6 +164,7 @@ export default {
         border-radius: 4px;
         text-align: center;
         position: relative;
+        overflow: hidden;
         .rechar_title{
           padding: 0 7px;
           overflow: hidden;
@@ -146,18 +189,20 @@ export default {
         }
         .corner_marker{
           position: absolute;
-          width: 27px;
-          height: 55px;
-          bottom: 0;
-          left: 20px;
-          img{
-            width: 100%;
-          }
+          width: 20px;
+          // height: 90px;
+          // bottom: 0;
+          left: 7px;
+          transform: rotate(-45deg);
+          height: 100%;
+          display: flex;
+          align-items: center;
+          top: 53px;
           p{
-            position: absolute;
-            font-size: 14px;
-            // writing-mode: vertical-rl;
-            bottom: 2px;
+            // position: absolute;
+            font-size: 12px;
+            transform: scale(0.72);
+            // bottom: 2px;
           }
         }
         .rechar_content{

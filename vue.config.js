@@ -1,7 +1,7 @@
 // const path = require('path')
 const config = require('./src/lib/config')
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/'+config.buildPageName+'/' : '/' ,
+  publicPath: process.env.NODE_ENV === 'production' ? './' : './' ,
     // publicPath: process.env.NODE_ENV === 'production' ? '/public/' : './',
     /* 输出文件目录：在npm run build时，生成文件的目录名称 */
     outputDir: config.buildPageName,
@@ -15,6 +15,8 @@ module.exports = {
     lintOnSave: false,
     /* webpack-dev-server 相关配置 */
     devServer: {
+        disableHostCheck: true,
+        // https: true,
         // open: true,
         /* 设置为0.0.0.0则所有的地址均能访问 */
         host: '0.0.0.0',
@@ -25,7 +27,7 @@ module.exports = {
         proxy: {
             '/api': {
                 /* 目标代理服务器地址 */
-                target: 'http://hrxsrest.leixiaolong.moqing.com/v1/',
+                target: 'http://hrxsrest.leixiaolong.moqing.com/',
                 /* 允许跨域 */
                 changeOrigin: true,
                 ws: true,

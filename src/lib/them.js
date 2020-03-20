@@ -1,15 +1,14 @@
-import { defaultThem } from '../lib/config'
+import { defaultThem, defaultField } from '../lib/config'
 export default {
     changeThem(them){  
         switch (them){ 
             case 'legendnovelapp':
-                return 'fiery'
+                return {themName:'legend', domainName:'https://cqscrest.legendnovel.com/'}
             // break;
-            case 'light':
-                return 'legend'
+            case 'hrxsapp':
+                return {themName:'fiery', domainName:'https://cqscrest.legendnovel.com/'}
             default:
-                return defaultThem
+                return {themName: defaultThem, domainName: defaultField}
         }
-
     }
 }
