@@ -1,17 +1,14 @@
-// const bridge = import('./jsbridge')
-module.exports = {
-    changeThem(them){ 
-        // console.log(bridge);
-               
-        // switch (them){ 
-            // case 'blank':
-                return 'blank'
-            // // break;
-
-            // case 'light':
-                // return 'light'
+import { defaultThem, defaultField } from '../lib/config'
+export default {
+    changeThem(them){  
+        switch (them){ 
+            case 'legendnovelapp':
+                return {themName:'legend', domainName:'https://cqscrest.legendnovel.com/'}
             // break;
-        // }
-
+            case 'hrxsapp':
+                return {themName:'fiery', domainName:'https://cqscrest.legendnovel.com/'}
+            default:
+                return {themName: defaultThem, domainName: defaultField}
+        }
     }
 }
