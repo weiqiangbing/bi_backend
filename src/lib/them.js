@@ -1,14 +1,17 @@
-export default {
-    changeThem(them){        
-        switch (them){ 
-            case 'blank':
+// const bridge = import('./jsbridge')
+module.exports = {
+    changeThem(them){ 
+        // console.log(bridge);
+               
+        // switch (them){ 
+            // case 'blank':
                 return 'blank'
-            // break;
+            // // break;
 
-            case 'light':
-                return 'light'
+            // case 'light':
+                // return 'light'
             // break;
-        }
+        // }
 
     }
 }

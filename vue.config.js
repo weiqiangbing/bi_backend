@@ -1,5 +1,8 @@
 // const path = require('path')
 const config = require('./src/lib/config')
+const themName = require('./src/lib/them')
+// console.log(them);
+
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/'+config.buildPageName+'/' : '/' ,
     // publicPath: process.env.NODE_ENV === 'production' ? '/public/' : './',
@@ -39,7 +42,7 @@ module.exports = {
         'style-resources-loader': {
             preProcessor: 'less',
             patterns: [
-                `./src/assets/css/thems/${config.themPathName}.less`,
+                `./src/assets/css/thems/${themName.changeThem()}.less`,
                 // './src/assets/css/thems/light.less'
             ],
         },
