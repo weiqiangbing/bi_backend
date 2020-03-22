@@ -10,13 +10,15 @@ Vue.use(loading)
 import './assets/js/flexible'
 // import 'https://native/interactor_proxy.js'
 // import './lib/jsbridge'
-
+console.log(storage.get('devLoginInfo'));
 document.addEventListener("onInteractorReady", function(event){
   // alert('enent',event)
   // alert('main.js里的监听')
 
 
   console.log('-----------执行了main.js里的监听---------------');
+
+  
   console.log('ListenerInteractorProxy',window.InteractorProxy);
 
   // storage.set('systemInfo', window.InteractorProxy.app)
@@ -48,6 +50,12 @@ let themWord = them.changeThem('legendnovelapp')
 import ('./assets/css/thems/'+themWord.themName+'.less')
 // const _axios = axios.getAxios(themWord.domainName)
 Vue.prototype.$axios = axios
+
+import  VConsole  from  'vconsole';
+let vConsole = new VConsole();
+// console.log("test");
+// console.log('33333333333333333');
+
 
 new Vue({
   router,

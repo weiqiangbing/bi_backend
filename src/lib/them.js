@@ -1,4 +1,4 @@
-import { defaultThem, defaultField } from '../lib/config'
+import config from './config'
 export default {
     changeThem(them){  
         switch (them){ 
@@ -8,7 +8,7 @@ export default {
             case 'hrxsapp':
                 return {themName:'fiery', domainName:'https://cqscrest.legendnovel.com/'}
             default:
-                return {themName: defaultThem, domainName: defaultField}
+                return {themName: config.defaultThem, domainName: config.defaultField}
         }
     }
 }

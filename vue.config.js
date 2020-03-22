@@ -1,6 +1,6 @@
 // const path = require('path')
 const config = require('./src/lib/config')
-const themName = require('./src/lib/them')
+// const themName = require('./src/lib/them')
 // console.log(them);
 
 module.exports = {

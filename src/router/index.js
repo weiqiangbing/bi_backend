@@ -15,10 +15,18 @@ const routes = [
   },
   {
     path: '/about',
-    name: 'About',
+    name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
     meta: {
       title: '其他活动',
+    },
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/login.vue'),
+    meta: {
+      title: '登陆页',
     },
   },
   // {

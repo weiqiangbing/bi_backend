@@ -4,7 +4,8 @@ import storage from './localstorage'
 import them from './them'
 import config from './config'
 import { Toast } from 'vant';
-import qs from 'qs'
+import router from '../router'
+// import qs from 'qs'
 
 // InteractorProxy.registerHandler()
 // const themWord = them.changeThem(InteractorProxy.app.scheme)
@@ -14,28 +15,41 @@ var themWord = {}
 const Axios = axios.create({
     // baseURL: config.requestFirst,
     baseURL: '/api',
+    responseType:'json',
     // baseURL: process.env.NODE_ENV == 'development'?'/api':themWord.domainName,
     timeout: config.requestTimeOut, 
     crossDomain: true,
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+    withCredentials: false,
+    headers:{
+      "Content-Type": "application/json",
+      // "id":'dfdf',
+      // "Device-Uuid": "6f03a8dff7d9f54a7d05f0a420fe8bbfe8f19448"
     }
 })
+// console.log(Axios.defaults.headers);
+
+// Axios.defaults.headers.wqbbbbbb = '55555555555555555'
+// console.log(Axios.defaults.headers);
+
 
 Axios.interceptors.request.use(
     config => {
-      if(config.method == 'post') {
-          config.data = qs.stringify(config.data);
-      }
+      // if(config.method == 'post') {
+      //     config.data = qs.stringify(config.data);
+      // }
         // 判断是否存在token，如果存在的话，则每个http header都加上token
         // if(process.env.NODE_ENV == 'development'){
           // if (storage.get('tokenid')) {
+            console.log(config);
+            
             let systemInfo = storage.get('systemInfo')
-            console.log('44444', JSON.parse(systemInfo));
+            // console.log('44444', JSON.parse(systemInfo));
             
             //添加请求头
-            config.headers = Object.assign({}, JSON.parse(systemInfo))
+            // config.headers = {
+            //   // "Device-Uuid": "6f03a8dff7d9f54a7d05f0a420fe8bbfe8f19448"
+            //   // "ids":'dfdf'
+            // }
           // }
         // }
         return config
@@ -54,6 +68,7 @@ Axios.interceptors.response.use(
         return Promise.reject(response);
       }
     },
+
     // 服务器状态码不是2开头的的情况
     // 这里可以跟你们的后台开发人员协商好统一的错误状态码
     // 然后根据返回的状态码进行一些操作，例如登录过期提示，错误提示等等
@@ -66,16 +81,20 @@ Axios.interceptors.response.use(
       }
       if (!error.response) {
         Toast('接口异常')
-        new Vue().$loading.hide()
+        // new Vue().$loading.hide()
         
       }else if (error.response.status) {
         if(error.response.data.code == 5002){
           Toast('登陆超时')
-          window.InteractorProxy.login()
+          if(process.env.NODE_ENV=='development'){
+            router.push('/login')
+          }else{
+            window.InteractorProxy.login()
+          }
         }else{
           Toast(error.response.data.desc)
         }
-        
+        new Vue().$loading.hide()
         // switch (error.response.status) {
         //   // 401: 未登录
         //   // 未登录则跳转登录页面，并携带当前页面的路径

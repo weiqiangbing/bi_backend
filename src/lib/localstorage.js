@@ -8,7 +8,7 @@ const localStorage = window.localStorage
 export function set(key, val) {
   try {
     if (!key) return
-    return localStorage.setItem(key, val)
+    return localStorage.setItem(key, JSON.stringify(val))
   } catch (err) {}
 }
 
@@ -20,7 +20,7 @@ export function set(key, val) {
 export function get(key) {
   try {
     if (!key) return ''
-    return localStorage.getItem(key)
+    return JSON.parse(localStorage.getItem(key))
   } catch (err) {
     return ''
   }
