@@ -30,7 +30,8 @@ module.exports = {
         proxy: {
             '/api': {
                 /* 目标代理服务器地址 */
-                target: 'http://hrxsrest.leixiaolong.moqing.com/',
+                // target: 'https://hrxsrest.moqing.com/',
+                target: 'https://hw-cqscrest.damowang.com/',
                 /* 允许跨域 */
                 changeOrigin: true,
                 ws: true,

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import rechargeActivities from '../views/rechargeActivities.vue'
 
 Vue.use(VueRouter)
 
@@ -11,6 +10,14 @@ const routes = [
     component: () => import('../views/rechargeActivities.vue'),
     meta: {
       title: '充值活动',
+    },
+  },
+  {
+    path: '/newPersonBenefits',
+    name: 'newPersonBenefits',
+    component: () => import('../views/newPersonBenefits.vue'),
+    meta: {
+      title: '新人福利',
     },
   },
   {
@@ -27,6 +34,14 @@ const routes = [
     component: () => import('../views/login.vue'),
     meta: {
       title: '登陆页',
+    },
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/test.vue'),
+    meta: {
+      title: '测试页',
     },
   },
   // {

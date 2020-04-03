@@ -1,38 +1,38 @@
 <template>
-  <div class="rechargeActivities">
+  <div class="rechargeActivities" :style="{'background-color':eventImage.background_color}">
     <div class="rechar_banner">
-      <img :src="mainData.event.position.top">
+      <img v-if="eventImage.top" :src="eventImage.top">
     </div>
-    <div class="rechar_box" style="bakground-color:'red'">
-      <activeDateBox :expiryTime="expiryTime"></activeDateBox>
-      <div class="rechar_item" v-for="(item, index) in mainData.product_list" :key="index">
+    <div class="rechar_box">
+      <activeDateBox v-show="productList.length != 0" :expiryTime="expiryTime" :endDate="endDate" @changeInvalid="changeInvalid" :bgColor="eventImage.background_color"></activeDateBox>
+      <div class="rechar_item" v-for="(item, index) in productList" :key="index">
         <div class="rechar_title">
           <div class="title_word">
-            <div class="main_title">{{item.coin+item.coin_name+'+'+item.premium+item.premium_name}}</div>
-            <div class="second_title">{{'原价'+item.currency+item.priceValue+'='+item.event_coin+item.coin_name}}</div>
+            <div class="main_title">{{$land(mainTitle(item))}}</div>
+            <div class="second_title">{{$land(secondTitle(item))}}</div>
           </div>
         </div>
         <div class="rechar_money">{{item.mark+item.priceValue}}</div>
-        <bgButton :btnBgUrl="mainData.event.position.button" btnWord="立即抢购" @btnClick="btnClick(index)"></bgButton>
-        <div class="corner_marker">
-          <p>标签标记</p>
+        <bgButton :btnBgUrl="btnBgUrl" :isInvalid="isInvalid" :btnWord="$land('立即抢购')" @btnClick="btnClick(item, index)"></bgButton>
+        <div v-if="item.badge_color && item.badge_text" class="corner_marker" :style="{'background-color': item.badge_color}">
+          <p>{{$land(item.badge_text)}}</p>
         </div>
       </div>
 
-      <div class="rechar_footer">
+      <div class="rechar_footer" v-show="productList.length != 0">
         <div class="footer_title">
           <!-- <img src="../assets/images/yinhao1.png" alt="活动规则图片"> -->
-          <b @click="showLoad">活动规则</b>
+          <b>{{$land('活动规则')}}</b>
           <!-- <img src="../assets/images/yinhao2.png" alt="活动规则图片"> -->
         </div>
-        <div class="footer_content">
-          1、活动所赠8折订阅全站作品、每日签到多送15魔豆、特定作品免费阅读等资格从领取之时起系统将自动开启；<br> 
-          2、活动所赠魔豆有效期为30天，请在有效期内完成使用；<br> 
-          3、活动所赠限时免费阅读的书籍领取后将自动置于您的书架，请在“我的书架”内查看；
+        <div class="footer_content" v-html="$land(eventRule)">
+          
         </div>
       </div>
+      <!-- <button @click="gethuodongData">获取用户信息</button>
+      <button >测试接口</button> -->
     </div>
-    <activePopup ref="popup" :headerUrl="headerUrl"></activePopup>
+    <activePopup ref="popup" :endDate="endDate" :headerUrl="eventImage.popup_top"></activePopup>
   </div>
 </template>
 
@@ -42,7 +42,8 @@ import bgButton from '../components/bgButton'
 import activePopup from '../components/activePopup'
 import activeDateBox from '../components/activeDateBox'
 import { Toast } from 'vant';
-import axios from 'axios'
+import comm from '../lib/utils/comm.js'
+import {params} from '../lib/utils/variable'
 // import '../assets/js/chinese'
 
 export default {
@@ -56,80 +57,111 @@ export default {
   data(){
     return {
       popupShow: false,
-      mainData:{},
+      isInvalid: true,
+      productList:[],
       expiryTime:'',
-      btnBgUrl: require('../assets/images/btnbg.png'),
-      headerUrl: '',
-      
+      isJoin:'',
+      btnBgUrl: '',
+      eventStatus:'',
+      endDate:'',
+      eventImage:{},
+      eventRule:`1、本活动只在页面展示的活动时间内生效，请及时关注。<br>
+          2、充值成功后，相应的魔币和魔豆将立即到账，请在个人中心查看。<br>
+          3、魔豆有效期为30天，到期自动失效，请在有效期内尽快使用。<br>
+          4、充值成功后，所赠打折卡将自动开启，打折卡有效时间内订阅全站作品可享受8折优惠。<br>
+          5、打折卡8折特权只在订阅时有效，针对其他形式的消费一律无效。<br>
+          6、如多次购买，系统将自动顺延所赠的打折卡时间。`
     }
   },
   created(){
+    this.$loading.show()
+  },
+  mounted(){
     this.getInitData()
-    // console.log('InteractorProxy',InteractorProxy.login);
-      // console.log('4444','./src/assets/css/thems/'+config.themPathName+'.less');
+  },
+  computed:{
     
   },
   methods:{
     getInitData(){
       let _this = this
-      this.$loading.show()
       tokenCheck().then((data)=>{
-        console.log(data);
-        this.$axios.get('/v1/event.recharge_activity?event_id=141&channel_code=apple&currency=USD').then((res)=>{
-          // console.log(res);
-          _this.mainData = res.data
-          _this.expiryTime = res.data.event.event_desc
-          _this.headerUrl = res.data.event.popup_top
+        console.log(params);
+        this.$axios.get('/v1/event.recharge_activity?event_id='+params.event_id).then((res)=>{
+          _this.productList = res.data.product_list
+          _this.expiryTime = res.data.event.expiry_time
+          _this.endDate = comm.getDatetr(_this.expiryTime * 1000)
+          _this.isJoin = res.data.event.isJoin
+          _this.eventStatus = res.data.event.event_status
+          _this.eventImage = res.data.event.position
           _this.$loading.hide()
+          if(res.data.event.event_rule){
+            _this.eventRule = res.data.event.event_rule
+          }
+          this.judgeAuthority()
         })
       })
     },
-    getInitData2(){
-      // let _this = this
-      // // this.$loading.show()
-      //   this.$axios.get('http://localhost:3000/api/users/getCode').then((res)=>{
-      //     Toast('接口请求成功')
-      //     console.log(res);
-      //     Toast(JSON.stringify(res));
-      //     _this.$loading.hide()
-      //   })
-    },
-    // testChina(){
-    //   zh_tran('t')
-    // },
-    btnClick(index){
-      if(index==0){
-        // console.log(this.btnBgUrl);
-        
-        this.$refs.popup.isShowPopup(true)
-        console.log(window.InteractorProxy);
-        let info = window.InteractorProxy.getUserInfo()
-        Toast(JSON.stringify(info))
-      }else if(index==1){
-        // Toast('重新登陆2')
-        window.InteractorProxy.open("open.page.HOME")
-      }else if(index==2){
-        window.InteractorProxy.login()
-      }else if(index==3){
-        // window.InteractorProxy.startWechatPay("10", "3000", "20")
-        this.getInitData1()
-      }else if(index==4){
-        this.getInitData2()
+    changeInvalid(isTrue){
+      if(isTrue){
+        this.isInvalid = true
+        this.btnBgUrl = this.eventImage.button_invalid
+        // this.$refs.popup.isShowPopup(true, "温馨提示", "非常抱歉<br>活动结束了~", this.expiryTime)
+      }else{
+        this.isInvalid = false
+        this.btnBgUrl = this.eventImage.button
       }
     },
-    // closePopup(){
-    //   this.$refs.popup.isShowPopup(false)
-    // },
-    btnClick1(){
-      window.InteractorProxy.login()
-      
+    // 判断按钮权限
+    judgeAuthority(){
+      if(this.eventStatus==1 && this.isJoin && this.expiryTime > new Date().getTime()/1000){
+        this.isInvalid = false
+        this.btnBgUrl = this.eventImage.button
+      }else if(this.eventStatus==1 && this.isJoin && this.expiryTime <= new Date().getTime()/1000){
+        this.$refs.popup.isShowPopup(true, "温馨提示", "非常抱歉<br>活动结束了~", this.expiryTime)
+        this.isInvalid = true
+        this.btnBgUrl = this.eventImage.button_invalid
+        this.expiryTime = new Date().getTime()/1000
+      }else{
+        this.isInvalid = true
+        this.btnBgUrl = this.eventImage.button_invalid
+        this.expiryTime = new Date().getTime()/1000
+        this.endDate = comm.getDatetr(new Date(new Date().getTime() - 24*3600*1000).getTime())
+        this.$refs.popup.isShowPopup(true, "温馨提示", "非常抱歉<br>活动已下架",this.expiryTime)
+      }
     },
-    showLoad(){
-      console.log('InteractorProxy',window.InteractorProxy);
-      console.log('window.InteractorProxy.app',window.InteractorProxy.app);
-      console.log('window.InteractorProxy.getUserInfo()',window.InteractorProxy.getUserInfo());
-      
-    }
+    mainTitle(item){
+      let str = ''
+      if(item.event_coin && item.coin_name){
+        str += item.event_coin+item.coin_name
+      }
+      if(item.event_premium && item.premium_name){
+        str += '+'+item.event_premium+item.premium_name
+      }
+      if(item.event_discount_days){
+        str += '+'+item.event_discount_days+this.$land('天打折卡')
+      }
+      return str
+    },
+    secondTitle(item){
+      let str = '原价：'
+      if(item.priceValue){
+        str+= item.mark+item.priceValue+'='
+      }
+      if(item.coin && item.coin_name){
+        str += item.coin+item.coin_name
+      }
+      if(item.premium && item.premium_name){
+        str += '+'+item.premium+item.premium_name
+      }
+      if(item.discount_days){
+        str += '+'+item.discount_days+this.$land('天打折卡')
+      }
+      return str
+    },
+    btnClick(item, index){
+      window.InteractorProxy.open("open.page.PAY")
+    },
 
   }
 }
@@ -138,9 +170,10 @@ export default {
   .rechargeActivities{
     width: 100%;
     height: 100%;
+    // overflow-y: auto;
     .rechar_banner{
       width: 100%;
-      height: 180px;
+      height: 173px;
       img{
         width: 100%;
         height: 100%;
@@ -159,7 +192,7 @@ export default {
       padding-bottom: 36px;
       .rechar_item{
         width: 329px;
-        height: 140px;
+        height: 144px;
         margin: 14px auto;
         border-radius: 4px;
         text-align: center;
@@ -189,19 +222,27 @@ export default {
         }
         .corner_marker{
           position: absolute;
-          width: 20px;
+          width: 100%;
           // height: 90px;
           // bottom: 0;
-          left: 7px;
-          transform: rotate(-45deg);
-          height: 100%;
+          // left: 7px;
+          transform: rotate(45deg);
+          height: 20px;
           display: flex;
           align-items: center;
-          top: 53px;
+          justify-content: center;
+          bottom: 0;
+          left: 0;
+          margin-left: -132px;
+          margin-top: -132px;
           p{
             // position: absolute;
             font-size: 12px;
             transform: scale(0.72);
+            // : 12px;
+            word-break: break-all;
+            margin-left: -28px;
+            letter-spacing: 4px;
             // bottom: 2px;
           }
         }

@@ -1,14 +1,13 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
-    <Button type="primary">默认按钮</Button>
-    <keep-alive>
-      <input type="text" v-model="text">
-    </keep-alive>
+    <h1>今天天气很好哈哈哈，可以好好玩耍，桥上</h1>
+    <Button type="primary" @click="testChines">默认按钮</Button>
+    
   </div>
 </template>
 <script>
 import { Button } from 'vant';
+import chooseZh from '../assets/js/chiness'
 export default {
   components:{Button},
   data(){
@@ -16,6 +15,11 @@ export default {
       text:''
     }
   },
+  methods:{
+    testChines(){
+      console.log(this.$land('韦强兵'))
+    }
+  }
 
 }
 </script>

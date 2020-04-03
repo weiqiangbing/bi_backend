@@ -1,36 +1,24 @@
 import Vue from 'vue'
 import axios from 'axios'
-import storage from './localstorage'
-import them from './them'
+import storage from './utils/localstorage'
 import config from './config'
 import { Toast } from 'vant';
 import router from '../router'
+// import loading from '../assets/js/loading'
 // import qs from 'qs'
-
-// InteractorProxy.registerHandler()
-// const themWord = them.changeThem(InteractorProxy.app.scheme)
-// const themWord = them.changeThem('legendnovelapp')
-var themWord = {}
-
+const origin = location.origin
 const Axios = axios.create({
     // baseURL: config.requestFirst,
-    baseURL: '/api',
+    baseURL: origin+'/api',
     responseType:'json',
-    // baseURL: process.env.NODE_ENV == 'development'?'/api':themWord.domainName,
     timeout: config.requestTimeOut, 
     crossDomain: true,
     withCredentials: false,
     headers:{
       "Content-Type": "application/json",
-      // "id":'dfdf',
-      // "Device-Uuid": "6f03a8dff7d9f54a7d05f0a420fe8bbfe8f19448"
+      "authorization":'',
     }
 })
-// console.log(Axios.defaults.headers);
-
-// Axios.defaults.headers.wqbbbbbb = '55555555555555555'
-// console.log(Axios.defaults.headers);
-
 
 Axios.interceptors.request.use(
     config => {
@@ -38,20 +26,52 @@ Axios.interceptors.request.use(
       //     config.data = qs.stringify(config.data);
       // }
         // 判断是否存在token，如果存在的话，则每个http header都加上token
-        // if(process.env.NODE_ENV == 'development'){
-          // if (storage.get('tokenid')) {
-            console.log(config);
-            
-            let systemInfo = storage.get('systemInfo')
-            // console.log('44444', JSON.parse(systemInfo));
-            
-            //添加请求头
-            // config.headers = {
-            //   // "Device-Uuid": "6f03a8dff7d9f54a7d05f0a420fe8bbfe8f19448"
-            //   // "ids":'dfdf'
-            // }
+        if(process.env.NODE_ENV == 'development'){
+            let devLoginInfo = storage.get('devLoginInfo')
+            if(devLoginInfo && devLoginInfo.token){
+              //添加请求头
+              config.headers = Object.assign(config.headers,{
+                "authorization": 'Bearer '+devLoginInfo.token,
+                "Device-Uuid": "6f03a8dff7d9f54a7d05f0a420fe8bbfe8f19448",
+                // "User-Agent": "Android",
+                "X-App-Version": "1.6.0"
+                // 'User-Agent': 'ylsyapp/ios iPhone Mobile',
+              })
+            }else{
+              router.push('/login')
+            }
           // }
-        // }
+        }else{
+          console.log('------------------axios.js文件-----------------------');
+          // console.log('(window.InteractorProxy.getUserInfo()',window.InteractorProxy.getUserInfo());
+          console.log('(window.InteractorProxy.app',window.InteractorProxy.app);
+          let proUserInfo = window.InteractorProxy.getUserInfo()
+          let appInfo = window.InteractorProxy.app
+          console.log('获取app的userInfo', proUserInfo);
+          if(proUserInfo && proUserInfo.id){
+            //添加请求头
+            let scheme = appInfo.scheme
+            if(scheme && scheme.indexOf(':') != -1){
+              scheme = scheme.split(":")[0]
+            }
+
+            let platform = appInfo.platform
+            if(platform && platform.toLowerCase() !='android'){
+              platform = 'ios iPhone Mobile'
+            }
+            config.headers = Object.assign(config.headers,{
+              "authorization": 'Bearer '+proUserInfo.token,
+              "Device-Uuid": proUserInfo.uuid,
+              "x-app-version": appInfo.version,
+              "User-Agent": scheme+'/'+platform
+            })
+            // console.log("config.headers", JSON.stringify(config.headers));
+            
+          }else{
+            window.InteractorProxy.login()
+          }
+          
+        }
         return config
     },
     err => {
@@ -81,11 +101,10 @@ Axios.interceptors.response.use(
       }
       if (!error.response) {
         Toast('接口异常')
-        // new Vue().$loading.hide()
         
       }else if (error.response.status) {
-        if(error.response.data.code == 5002){
-          Toast('登陆超时')
+        if(error.response.data.code == 5002 || error.response.data.code == 5005){
+          // Toast('登陆超时')
           if(process.env.NODE_ENV=='development'){
             router.push('/login')
           }else{
@@ -94,42 +113,10 @@ Axios.interceptors.response.use(
         }else{
           Toast(error.response.data.desc)
         }
-        new Vue().$loading.hide()
-        // switch (error.response.status) {
-        //   // 401: 未登录
-        //   // 未登录则跳转登录页面，并携带当前页面的路径
-        //   // 在登录成功后返回当前页面，这一步需要在登录页操作。
-        //   case 401:
-        //     vant.Toast.fail("身份验证失败，请关闭重新进入。");
-        //     break;
-  
-        //   // 403 token过期
-        //   // 登录过期对用户进行提示
-        //   // 清除本地token和清空vuex中token对象
-        //   // 跳转登录页面
-        //   case 403:
-        //     vant.Toast.fail("登录过期，请关闭重新进入。");
-        //     // 清除token
-        //     break;
-  
-        //   // 404请求不存在
-        //   case 404:
-        //     vant.Toast.fail("您访问的网页不存在。");
-        //     break;
-        //   // 其他错误，直接抛出错误提示
-        //   default:
-        //     vant.Toast.fail(error.response.data.message);
-        // }
-        // return Promise.reject(error.response);
       }
+      new Vue().$loading.hide()
       return Promise.reject(error)
     }
   );
 
 export default Axios
-// export default {
-//   getAxios(appName){
-//     themWord = them.changeThem(appName)
-//     return Axios
-//   }
-// }

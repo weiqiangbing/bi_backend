@@ -3,69 +3,63 @@
       <div class="time_box">
         <div class="time_num">
             <p class="num">{{endTime.day}}</p>
-            <p class="tip">天</p>
+            <p class="tip">{{$land('天')}}</p>
             <p class="num">{{endTime.hour}}</p>
-            <p class="tip">时</p>
+            <p class="tip">{{$land('时')}}</p>
             <p class="num">{{endTime.minute}}</p>
-            <p class="tip">分</p>
-            <p class="num">{{endTime.second}}</p>
-            <p class="tip">秒</p>
+            <p class="tip">{{$land('分')}}</p>
+            <p class="num">{{endTime.second || 0}}</p>
+            <p class="tip">{{$land('秒')}}</p>
         </div>
         <div class="time_to">
-          截止时间：2019.02.01
+          {{$land('截止时间')}}：{{endDate}}
         </div>
       </div>
-      <div class="time_silder"></div>
+      <div class="silder time_silder1">
+        <p :style="{'background-color':bgColor}"></p>
+        <div v-show="bgColor"></div>
+        <p :style="{'background-color':bgColor}"></p>
+      </div>
+      <div class="silder time_silder2">
+        <p :style="{'background-color':bgColor}"></p>
+        <div v-show="bgColor"></div>
+        <p :style="{'background-color':bgColor}"></p>
+      </div>
     </div>
 </template>
 
 <script>
+import comm from '../lib/utils/comm.js'
 export default {
-  props:['expiryTime'],
+  props:['expiryTime', 'bgColor', 'endDate'],
   name: 'activeDate',
   mounted(){
     
   },
   data(){
     return {
-      
+      surplusTime:'',
+    }
+  },
+  watch:{
+    expiryTime(val, old){
+      if(val && !old){
+        this.surplusTime = this.expiryTime * 1000
+        setInterval(()=>{
+          this.surplusTime = this.surplusTime - 1
+        },1000)
+      }
     }
   },
   computed:{
     endTime(){
-      var theTime = parseInt(this.expiryTime);// 需要转换的时间秒 
-      var theTime1 = 0;// 分 
-      var theTime2 = 0;// 小时 
-      var theTime3 = 0;// 天
-      if(theTime > 60) { 
-        theTime1 = parseInt(theTime/60); 
-        theTime = parseInt(theTime%60); 
-        if(theTime1 > 60) { 
-        theTime2 = parseInt(theTime1/60); 
-        theTime1 = parseInt(theTime1%60); 
-        if(theTime2 > 24){
-          //大于24小时
-          theTime3 = parseInt(theTime2/24);
-          theTime2 = parseInt(theTime2%24);
-        }
-        } 
-      } 
-      var result = {};
-      if(theTime > 0){
-        result.second = parseInt(theTime)
+      let lastTime = comm.getDayAndTime(this.surplusTime)
+      if(lastTime.day || lastTime.hour || lastTime.minute || lastTime.second){
+        this.$emit('changeInvalid',false)
+      }else{
+        this.$emit('changeInvalid',true)
       }
-      if(theTime1 > 0) { 
-        result.minute = parseInt(theTime1)
-      } 
-      if(theTime2 > 0) { 
-        result.hour = parseInt(theTime2)
-      } 
-      if(theTime3 > 0) { 
-        result.day = parseInt(theTime3)
-      }
-      return result; 
-      
-
+     return lastTime    
     }
     
 
@@ -80,15 +74,16 @@ export default {
 <style lang="less" scoped>
   .rechar_time{
     position: relative;
-    width: 318px;
+    width: 270px;
+    height:60px;
     margin: 0 auto;
     margin-top: -65px;
     .time_box{
-      width:290px;
+      width:270px;
       height:60px;
       margin: 0 auto;
       text-align: center;
-      border-radius:11px 11px 0px 0px;
+      border-radius: 4px;
       z-index: 9;
       position: relative;
       top: 6px;
@@ -104,6 +99,8 @@ export default {
           font-size:12px;
           width:20px;
           height:18px;
+          line-height: 18px;
+          text-align: center;
         }
         .tip{
           font-size:10px;
@@ -115,10 +112,40 @@ export default {
         line-height: 20px;
       }
     }
-    .time_silder{
-      width:318px;
-      height:14px;
-      border-radius:7px;
+    .silder{
+      position: absolute;
+      bottom: -22px;
+      z-index: 10;
+      height: 24px;
+      width: 5px;
+      div{
+        height: 24px;
+        width: 5px;
+        position: absolute;
+        background-color: rgb(255,255,255);
+        z-index: 9;
+        border-radius: 10px;
+        box-shadow: 0 0 1px 1px #E4E4E4;
+      }
+      p{
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        position: absolute;
+        left: -2px;
+      }
+      p:nth-child(1){
+        top: -5px;
+      }
+      p:nth-child(3){
+        bottom: -5px;
+      }
+    }
+    .time_silder1{
+      left: 40px;
+    }
+    .time_silder2{
+      right: 40px;
     }
 
   }

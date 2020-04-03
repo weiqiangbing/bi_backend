@@ -1,19 +1,19 @@
 <template>
   <div class="active_popup" v-show="popupAll">
     <!-- <transition name="bounce"> -->
-      <Popup v-model="popupShow" @close="onClose" :overlay-style="{backgroundColor:'rgba(0, 0, 0, 0.29)'}">
+      <Popup v-model="popupShow" @close="onClose" :close-on-click-overlay="shadwClose" :overlay-style="{backgroundColor:'rgba(0, 0, 0, 0.29)'}">
         <div class="pop_box">
           <img id="imgId" class="pop_header" :src="headerUrl" alt="pop弹框图片">
           <div class="pop_content">
-            <div class="pop_tip">温馨提示</div>
-            <div class="pop_list">
-              非常抱歉<br>活动结束了～
+            <div class="pop_tip" v-html="$land(popTitle)"></div>
+            <div class="pop_list" v-html="$land(popContent)">
+              
             </div>
             <div class="pop_btn" @click="onClose">
-              <bgButton :btnBgUrl="btnBgUrl" btnWord="我知道了"></bgButton>
+              <bgButton :btnBgUrl="btnBgUrl" :btnWord="$land('我知道了')"></bgButton>
             </div>
-            <div class="end_time">
-              活动截止时间：2020-02-02
+            <div class="end_time" v-if="endDate">
+              {{$land('活动截止时间')}}：{{endDate}}
             </div>
           </div>
         </div>
@@ -23,10 +23,23 @@
 </template>
 
 <script>
-import {Popup, Loading} from 'vant'
+import {Popup} from 'vant'
 import bgButton from './bgButton'
 export default {
-  props:['headerUrl'],
+  // props:['headerUrl', 'endDate'],
+  props:{
+    headerUrl: {
+      type: String
+    },
+    endDate:{
+      type: String,
+      default: ''
+    },
+    shadwClose:{
+      type: Boolean,
+      default: true
+    }
+  },
   name: 'activePopup',
   components:{Popup, bgButton},
   mounted(){
@@ -36,8 +49,14 @@ export default {
     return {
       popupAll: false,
       popupShow: false,
+      popTitle:'',
+      popContent:'',
+      expiryTime:'',
       btnBgUrl: require('../assets/images/btnbg.png'),
     }
+  },
+  computed:{
+    
   },
   methods:{
     // panicBuy(){
@@ -47,9 +66,12 @@ export default {
       this.popupShow = false
       
     },
-    isShowPopup(isTrue){
+    isShowPopup(isTrue, title, content, expiryTime){
       if(isTrue){
         this.popupShow = true
+        this.popTitle = title
+        this.popContent = content
+        this.expiryTime = expiryTime
         this.$nextTick(()=>{
           let imgId = document.getElementById('imgId')
           imgId.onload=(()=>{
@@ -103,8 +125,5 @@ export default {
     }
     
   }
-  // .active_popup /deep/.van-overlay{
-  //   opacity: 0.2905;
-  // }
 
 </style>

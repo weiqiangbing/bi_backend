@@ -3,23 +3,34 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- <meta name="viewport" content="width=device-width,initial-scale=1.0"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <!-- <script src="https://native/interactor_proxy.js" type="text/javascript"></script> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"> -->
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <script src="https://native/interactor_proxy.js" type="text/javascript"></script>
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <!-- <title><%= htmlWebpackPlugin.options.title %></title> -->
     <title>活动</title>
-    <script src="./jsbridge.js" type="text/javascript"></script>
+    <!-- <script src="./jsbridge.js" type="text/javascript"></script> -->
     <script>
-      document.addEventListener("onInteractorReady", function(event){
-        // console.log(event.InteractorProxy.version)
-        // window.InteractorProxy.app = event
-        // alert(JSON.stringify(event.app))
-        alert(JSON.stringify(window.InteractorProxy.getUserInfo()))
+      // document.addEventListener("onInteractorReady", function(event){
+      //   // console.log(event.InteractorProxy.version)
+      //   // window.InteractorProxy.app = event
+      //   // alert(JSON.stringify(event.app))
 
-        // window.InteractorProxy = event.InteractorProxy
-        // window.InteractorProxy.registerHandler()
-      })
+      //   // alert(JSON.stringify(window.InteractorProxy.getUserInfo()))
+
+      //   // window.InteractorProxy.registerHandler()
+      //   console.log('---------------index.html-----------------------');
+      //   window.InteractorProxy.registerHandler()
+      //   // let innerhtml = "<div id='app'></div>"
+      //   // let body = document.getElementsByTagName('body')
+      //   // body.innerHTML = innerhtml
+      //   // console.log(document.getElementsByTagName('body')[0])
+      //   // let div = document.createElement('div')
+      //   // let body = document.getElementsByTagName('body')[0]
+      //   // div.id = 'app'
+      //   // body.appendChild(div)
+      // })
+
     </script>
     
   </head>
@@ -30,5 +41,20 @@
     <div id="app"></div>
     
     <!-- built files will be auto injected -->
+    <script>
+      
+    //   window.addEventListener('resize', () => {
+    //     console.log('resizeee');
+        
+    //   const activeElement = document.activeElement
+    //   if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+    //     setTimeout(() => {
+    //       activeElement.scrollIntoView()
+    //     }, 100)
+    //     }
+    // })
+      
+      
+    </script>
   </body>
 </html>

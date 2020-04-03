@@ -7,7 +7,7 @@
 </template>
 <script>
 import { Button } from 'vant';
-import storage from '../lib/localstorage'
+import storage from '../lib/utils/localstorage'
 export default {
   name:'login',
   components:{Button},
@@ -34,6 +34,7 @@ export default {
                 // 'X-APP-FC':	1,
             }
             storage.set('devLoginInfo', devLoginInfo)
+            this.$router.go(-1)
         })
       }
   }
