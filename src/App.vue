@@ -1,22 +1,16 @@
 <template>
-  <div id="app">
-    <div id="version"></div>
-    <router-view/>
+  <div id="app" v-loading.fullscreen.lock="fullLoading">
+    <router-view />
   </div>
 </template>
-<script>
-import utily from './lib/utils/utily'
 
+<script>
 export default {
-  created(){
-   
-  },
+  name: 'App',
+  computed:{
+    fullLoading(){
+      return this.$store.state.part.fullLoading
+    }
+  }
 }
 </script>
-
-<style scoped lang="less">
-  #app{
-    height: 100%;
-  }
-</style>
-

@@ -1,56 +1,55 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+import {funcUrlDel,redictUrl} from '@/utils/validate'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
+
+import '@/styles/index.scss' // global css
+
+import App from './App'
 import store from './store'
-import loading from './assets/js/loading'
-import formatJson from './lib/utils/formatJson'
-import utily from './lib/utils/utily'
-import {chooseZh} from './assets/js/chiness'
+import router from './router'
 
-Vue.use(loading)
-import  VConsole  from  'vconsole';
-let vConsole = new VConsole();
+import '@/icons' // icon
+import '@/permission' // permission control
 
-import './assets/js/flexible'
-// import 'https://native/interactor_proxy.js'
-document.addEventListener("onInteractorReady", function(event){  
-  console.log('-----------执行了main.js里的监听---------------');
+// import '@/utils/filterWord'
+// alert(location.href);
+// alert(location.search.indexOf('authorization=') != -1)
 
-})
+if(location.href && location.href.indexOf('authorization=') != -1){
+  funcUrlDel('authorization')
+}else{
+  redictUrl()
+}
 
-import './assets/css/main.less'
+/**
+ * If you don't want to use mock-server
+ * you want to use MockJs for mock api
+ * you can execute: mockXHR()
+ *
+ * Currently MockJs will be used in the production environment,
+ * please remove it before going online! ! !
+ */
+// todo::是否打开mock数据
+// import { mockXHR } from '../mock'
+// if (process.env.NODE_ENV === 'development') {
+//   mockXHR()
+// }
+
+// set ElementUI lang to EN
+// Vue.use(ElementUI, { locale })
+// 如果想要中文版 element-ui，按如下方式声明
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-import axios from './lib/axios'
-
-Vue.prototype.$axios = axios
-Vue.prototype.$store = store
-Vue.prototype.$land = chooseZh
-
 new Vue({
+  el: '#app',
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
-
-if(process.env.NODE_ENV == 'development'){
-  import("./assets/css/thems/legend.less")
-}else{
-  utily.waitLoad(()=>{
-    // console.log('main.js里得app',window.InteractorProxy.app);
-    let scheme = window.InteractorProxy.app.scheme
-    if(scheme && scheme.indexOf(':') != -1){
-      scheme = scheme.split(':')[0]
-    }
-    let appObj = formatJson.formatAppInfo('appName', scheme)
-    console.log("./assets/css/thems/"+appObj.themName+".less");
-    
-    import("./assets/css/thems/"+appObj.themName+".less")
-    // if(parseInt(window.InteractorProxy.version) < 7){
-    //     store.commit('showVersion',true)
-    // }
-  })
-}
-
+})
 

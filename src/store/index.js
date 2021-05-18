@@ -1,31 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import formatJson from '../lib/utils/formatJson'
+import getters from './getters'
+import app from './modules/app'
+import settings from './modules/settings'
+import user from './modules/user'
+import tagsView from './modules/tagsView'
+import permission from './modules/permission'
+import part from './modules/part'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-    versionPop: false,
-    themUrl: ''
-  },
-  getters:{
-    
-  },
-  mutations: {
-    showVersion(state, isTrue){
-      state.versionPop = isTrue
-    },
-    // changeThem(state, name){
-    //   state.themUrl = name
-    // }
-  },
-  actions: {
-    // syChangeThem(context, name){
-    //   context.commit('changeThem', name)
-    // }
-  },
+const store = new Vuex.Store({
   modules: {
-
-  }
+    app,
+    settings,
+    user,
+    tagsView,
+    permission,
+    part
+  },
+  getters
 })
+
+export default store

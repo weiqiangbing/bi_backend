@@ -1,0 +1,97 @@
+.static_box{
+  display: flex;
+  margin: 12px 0;
+  .static_item{
+    text-align: center;
+    padding: 14px 22px;
+    border: 1px solid #ddd;
+    margin: 0 10px;
+    .static_num{
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .static_word{
+      font-size: 14px;
+    }
+  }
+}
+
+.user_popover{
+  position: relative;
+  left: 10px;
+  top: 65px;
+  z-index: inherit;
+  .el-form .el-form-item {
+    margin-bottom: 3px;
+  }
+}
+.margin-top-20{
+  margin-top: 20px;
+}
+.click_cell{
+  color: #409EFF;
+  cursor: pointer;
+}
+.main-table{
+  min-height: 100px;
+  .el-table__fixed{
+    top: 20px;
+    tr{
+      background-color: #fafafa;
+      th{
+        background-color: #fafafa;
+      }
+    }
+    .el-table__fixed-footer-wrapper{
+      td{
+          padding-top: 0;
+          position: relative;
+          top: -20px;
+          .cell{
+            position: relative;
+            top: 5px;
+          }
+      }
+    }
+  }
+}
+
+body .el-table th.gutter {
+  display: table-cell !important
+}
+.el-table__footer-wrapper td{
+  padding: 6px 2px !important;
+}
+
+/*修改滚动条样式*/
+.init_scroll div::-webkit-scrollbar{
+  width:6px;
+  height:8px;
+  /**/
+}
+.init_scroll div::-webkit-scrollbar-track{
+  background: rgb(239, 239, 239);
+  border-radius:2px;
+}
+.init_scroll div::-webkit-scrollbar-thumb{
+  background: #bfbfbf;
+  border-radius:10px;
+}
+.init_scroll div::-webkit-scrollbar-thumb:hover{
+  background: #b3b3b3;
+}
+.init_scroll div::-webkit-scrollbar-corner{
+  background: rgb(239, 239, 239);
+}
+.check_th_clss {
+  .el-checkbox{
+    width: 110px;
+    .el-checkbox__label{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      position: relative;
+      top: 5px;
+    }
+  }
+}

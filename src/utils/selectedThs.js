@@ -1,0 +1,41 @@
+export const pageSelectTh = {
+  // 书籍数据配置
+  booksTh: ["timeline","site_id","platform","section_id","book_id","uv","users","book_id_count","pv","book_name"],
+  // 章节PV
+  chapterPvTh: ["timeline","site_id","platform","book_id","book_name","pv","uv","users","book_id_count","section_id"],
+  // 作品消费
+  bookcostTh: ["section_id","book_id_count","platform","timeline","cost_coin_chapters","field_1","cost_coin_user","cost_user","book_id","cost_chapters","site_id","book_name","cost_total","cost_coin"],
+  // 作品互动
+  bookactTh: ["timeline","site_id","platform","section_id","book_id","book_name","comment","activity","average_cost_user","all_cost_user","book_id_count","share","vote","high_cost_user","bookshelf","recommend","reward"],
+  // 推荐位统计
+  bookrecomTh: ["timeline","site_id","platform","section_id","tj_page","book_name","pv","uv","book_id_count","book_id","tj_pos"],
+  // 充值统计
+  paydataTh: ["timeline","site_id","platform","order_num","pay_money","user_num","pay_num","fuel_money","fuel_user","discount_money","discount_user","diamand_money","diamand_user","pay_channel_tag","fc"],
+  // 用户充值详情
+  payuserTh: ["timeline","site_id","platform","user_id","order_num","pay_money","pay_num","pay_channel_tag","currency","user_id_count"],
+  // 用户消费详情
+  costuserTh: ["timeline","site_id","platform","section_id","book_id","book_name","user_id","cost_total","cost_coin","chapters_total","user_id_count","book_id_count","coin_chapters"],
+  // 章节列表
+  bookChapter: [],
+  // app推广数据
+  appExtendData: [],
+  // 日活月活列表
+  dayMonthLife: [],
+  // uv排行榜
+  uvRecords: [],
+  // 增幅排行榜
+  growThRate: [],
+  // 推送列表
+  publishList: [],
+  // 专属魔豆数据
+  exclusBean: [],
+   // 关键词统计
+  keyWordStatics: [],
+  // 书籍每日统计
+  bookEveryDayStatics: [],
+  // 充值项统计
+  rechargeStatics: [],
+// 作品分析
+  bookStatics: [],
+
+}
